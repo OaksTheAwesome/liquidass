@@ -500,8 +500,10 @@ static BOOL LGItemVisibleForCurrentPreferences(NSDictionary *item) {
     [button setImage:[UIImage systemImageNamed:@"chevron.up" withConfiguration:config] forState:UIControlStateNormal];
     button.tintColor = [UIColor labelColor];
     button.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
-    button.contentEdgeInsets = UIEdgeInsetsMake(0.0, 12.0, 0.0, 12.0);
-    button.imageEdgeInsets = UIEdgeInsetsMake(0.0, 6.0, 0.0, -6.0);
+    UIButtonConfiguration *configButton = button.configuration ?: [UIButtonConfiguration plainButtonConfiguration];
+    configButton.contentInsets = NSDirectionalEdgeInsetsMake(0.0, 12.0, 0.0, 12.0);
+    configButton.imagePadding = 6.0;
+    button.configuration = configButton;
     [button addTarget:self action:@selector(handleScrollTopPressed) forControlEvents:UIControlEventTouchUpInside];
     [blurView.contentView addSubview:button];
 
@@ -808,7 +810,9 @@ static BOOL LGItemVisibleForCurrentPreferences(NSDictionary *item) {
         button.backgroundColor = [_accentColor colorWithAlphaComponent:(self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ? 0.16 : 0.10)];
         button.layer.cornerRadius = 19.0;
         button.layer.cornerCurve = kCACornerCurveContinuous;
-        button.contentEdgeInsets = UIEdgeInsetsMake(0.0, 14.0, 0.0, 14.0);
+        UIButtonConfiguration *configButton = button.configuration ?: [UIButtonConfiguration plainButtonConfiguration];
+        configButton.contentInsets = NSDirectionalEdgeInsetsMake(0.0, 14.0, 0.0, 14.0);
+        button.configuration = configButton;
         [button.heightAnchor constraintEqualToConstant:38.0].active = YES;
         [button addTarget:self action:@selector(handleJumpChipPressed:) forControlEvents:UIControlEventTouchUpInside];
         objc_setAssociatedObject(button, @selector(handleJumpChipPressed:), title, OBJC_ASSOCIATION_COPY_NONATOMIC);
@@ -1117,7 +1121,10 @@ static BOOL LGItemVisibleForCurrentPreferences(NSDictionary *item) {
     menuButton.showsMenuAsPrimaryAction = YES;
     menuButton.tintColor = _accentColor;
     menuButton.titleLabel.font = [UIFont systemFontOfSize:15.0 weight:UIFontWeightSemibold];
-    menuButton.contentEdgeInsets = UIEdgeInsetsMake(4.0, 8.0, 4.0, 8.0);
+    UIButtonConfiguration *configMenu = menuButton.configuration ?: [UIButtonConfiguration plainButtonConfiguration];
+    configMenu.contentInsets = NSDirectionalEdgeInsetsMake(4.0, 8.0, 4.0, 8.0);
+    configMenu.imagePadding = 6.0;
+    menuButton.configuration = configMenu;
     menuButton.backgroundColor = UIColor.clearColor;
     menuButton.layer.cornerRadius = 0.0;
 
@@ -1139,7 +1146,6 @@ static BOOL LGItemVisibleForCurrentPreferences(NSDictionary *item) {
         [menuButton setTitle:selectedTitle forState:UIControlStateNormal];
         [menuButton setImage:[UIImage systemImageNamed:@"chevron.down"] forState:UIControlStateNormal];
         menuButton.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
-        menuButton.imageEdgeInsets = UIEdgeInsetsMake(0.0, 6.0, 0.0, -6.0);
     }
 
     __weak typeof(self) weakSelf = self;
@@ -1273,7 +1279,9 @@ static BOOL LGItemVisibleForCurrentPreferences(NSDictionary *item) {
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     button.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-    button.contentEdgeInsets = UIEdgeInsetsZero;
+    UIButtonConfiguration *configButton = button.configuration ?: [UIButtonConfiguration plainButtonConfiguration];
+    configButton.contentInsets = NSDirectionalEdgeInsetsZero;
+    button.configuration = configButton;
     NSString *actionName = item[@"action"];
     if (actionName.length) {
         SEL action = NSSelectorFromString(actionName);
